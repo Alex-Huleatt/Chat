@@ -1,16 +1,17 @@
 waiting to receive
 sending "hi"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
-sending "a"
+sending "asd"
+sending "asdf"
+sending "as"
+sending "fd"
+sending "asdf"
+sending "asdf"
+sending "asfd"
+sending "as"
+sending "fsa"
+sending "df"
+sending "asdf"
+sending "asdf"
 Exception in thread Thread-1:
 Traceback (most recent call last):
   File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 810, in __bootstrap_inner
@@ -21,12 +22,63 @@ Traceback (most recent call last):
     data, server = sock.recvfrom(4096)
 timeout: timed out
 
-(<open file 'err.txt', mode 'w' at 0x101fe3c90>, 'closing socket')
+sending "asdf"
+sending "as"
+sending "dfa"
+sending "d"
+sending "a"
+sending "a"
+sending "asdf"
+sending "a"
+sending "sdfa"
+sending "sdf"
+sending "asdfqw"
+sending "eq"
+sending "we"
+sending "qwe"
+sending "qwe"
+sending "qwe"
+sending "qwe"
+sending "q"
+sending "weq"
+sending "we"
+sending "qwe"
+sending "qw"
+sending "eq"
+sending "we"
+sending "qwe"
+sending "q"
+sending "weq"
+sending "we"
+sending "qe"
+sending "q"
+sending "eq"
+sending "eq"
+sending "we"
+sending "qe"
+sending "q"
+sending "eq"
+sending "eq"
+sending "eq"
+sending "e"
+sending "q"
+sending "a"
+sending "sd"
+sending "ad"
+sending "q"
+sending "we"
+sending "wx"
+sending "g'dr"
+sending "thd"
+sending "fhd"
+sending "fh"
+sending "rt"
+sending "sfxaf"
 Traceback (most recent call last):
   File "client.py", line 100, in <module>
     send(ih,sock)
-  File "client.py", line 82, in send
-    sock.shutdown()
-  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
-    return getattr(self._sock,name)(*args)
-TypeError: shutdown() takes exactly one argument (0 given)
+  File "client.py", line 73, in send
+    ipt = cht.getIpt()
+  File "client.py", line 20, in getIpt
+    return self.screen.getstr(0,0,curses.COLS)
+KeyboardInterrupt
