@@ -60,7 +60,10 @@ def rec(cht,sock):
     while not kill:
         # Receive response
         print('waiting to receive')
-        data, server = sock.recvfrom(4096)
+        try:
+        	data, server = sock.recvfrom(4096)
+        except:
+        	continue
         print('received "%s"' % data)
         cht.addLine(str(data))
         cht.displayScreen()
@@ -79,7 +82,6 @@ def send(cht,sock):
         sent = sock.sendto(ipt, server_address)
         cht.displayScreen()
     print(sys.stderr, 'closing socket')
-    sock.shutdown()
     sock.close()
 
 
@@ -87,15 +89,11 @@ def send(cht,sock):
 if __name__ == '__main__':
     server_address = ('52.8.57.58', 40000)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(5)
+    sock.setblocking(0)
     sys.stdout = open('err.txt', "w")
     sys.stderr = sys.stdout
-
-
     ih = Chat()
-
     rec_th = threading.Thread(target=rec,args=(ih,sock) )
-
     rec_th.start()
     send(ih,sock)
 
