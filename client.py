@@ -85,7 +85,7 @@ def send(cht,sock):
 
 
 if __name__ == '__main__':
-    server_address = ('52.8.57.58', 40004)
+    server_address = ('52.8.57.58', 40000)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(5)
     sys.stdout = open('err.txt', "w")
