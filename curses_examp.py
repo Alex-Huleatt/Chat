@@ -4,13 +4,10 @@ import random
 import time
 import threading
 
-
-
 class Chat:
 
     outputLines = []
-    screen = None
-            
+    screen = None        
     def __init__(self):
         self.screen = curses.initscr()
         curses.echo()
@@ -21,8 +18,7 @@ class Chat:
         self.nOutputLines=0
 
     def getIpt(self):
-        s = self.screen.getstr(0,0,15)
-        return s
+        return self.screen.getstr(0,0,curses.COLS)
         
     def run(self):
         while True:
@@ -61,6 +57,8 @@ class Chat:
     # catch any weird termination situations
     def __del__(self):
         self.restoreScreen()
+
+
 
 
 if __name__ == '__main__':

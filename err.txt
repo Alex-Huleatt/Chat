@@ -1,0 +1,26 @@
+waiting to receive
+sending "hello!"
+received "hello!"
+waiting to receive
+sending "how are you?!"
+received "how are you?!"
+waiting to receive
+(<open file 'err.txt', mode 'w' at 0x10fa18c90>, 'closing socket')
+Traceback (most recent call last):
+  File "client.py", line 100, in <module>
+    send(ih,sock)
+  File "client.py", line 82, in send
+    sock.shutdown()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+TypeError: shutdown() takes exactly one argument (0 given)
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 810, in __bootstrap_inner
+    self.run()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 763, in run
+    self.__target(*self.__args, **self.__kwargs)
+  File "client.py", line 63, in rec
+    data, server = sock.recvfrom(4096)
+timeout: timed out
+
