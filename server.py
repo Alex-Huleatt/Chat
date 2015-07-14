@@ -23,7 +23,7 @@ def rec():
 	global usrs
 	global usr_nms
 	global nms_index
-	
+
 	while not kill:
 		try:
 			data, address = sock.recvfrom(4096)
@@ -35,8 +35,8 @@ def rec():
 		if (address not in usr_nms):
 			usr_nms[address]=nms[nms_index]
 			nms_index= (nms_index+1)%len(nms)
-		print(data)
-		queue.append(usr_nms[address]+':'+data)
+
+		queue.append(usr_nms[address]+':'+data.strip())
 
 def snd():
 	global queue
