@@ -36,7 +36,7 @@ def rec():
 			usr_nms[address]=nms[nms_index]
 			nms_index= (nms_index+1)%len(nms)
 
-		queue.append(re.sub('\s','',usr_nms[address]+':'+data.decode('UTF-8')))
+		queue.append(re.sub('\n','',usr_nms[address]+':'+data.decode('UTF-8')))
 
 def snd():
 	global queue
