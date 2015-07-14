@@ -1,4 +1,4 @@
-import socket,sys,time,threading,signal
+import socket,sys,time,threading,signal,re
 
 
 
@@ -23,7 +23,7 @@ def rec():
 	global usrs
 	global usr_nms
 	global nms_index
-
+	r = re.compile('\s')
 	while not kill:
 		try:
 			data, address = sock.recvfrom(4096)
@@ -36,7 +36,7 @@ def rec():
 			usr_nms[address]=nms[nms_index]
 			nms_index= (nms_index+1)%len(nms)
 
-		queue.append((usr_nms[address]+':'+data.decode('UTF-8')).strip())
+		queue.append(re.sub('\s','',usr_nms[address]+':'+data.decode('UTF-8')))
 
 def snd():
 	global queue
