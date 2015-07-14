@@ -4,7 +4,7 @@ import socket,sys,time,threading
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 # Bind the socket to the port
-server_address = ('', 40000)
+server_address = ('', 40001)
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 
