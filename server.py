@@ -21,6 +21,8 @@ def rec():
 		try:
 			data, address = sock.recvfrom(4096)
 		except:
+			if (kill):
+				return
 			continue
 		usrs[address]=time.time()
 		print(data)

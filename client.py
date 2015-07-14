@@ -36,7 +36,7 @@ class Chat:
 
     def getCh(self):
         c = self.screen.getch()
-        valid_chars = re.compile('\w')
+        valid_chars = re.compile('[\w\s!\?\.\':;]')
         print('read:',c)
         if c==ord('\n'):
             t = self.curString
