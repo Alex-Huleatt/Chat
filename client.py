@@ -20,13 +20,13 @@ class Chat:
     def addLine(self, line):
         self.outputLines.append(line)
         self.nOutputLines+=1
-        if self.nOutputLines > curses.LINES -1:
+        if self.nOutputLines > curses.LINES-1:
             self.topLineNum += 1
 
     def displayScreen(self):
         self.screen.erase()
         top = self.topLineNum
-        bottom = self.topLineNum+curses.LINES
+        bottom = self.topLineNum+(curses.LINES-1)
         self.screen.addstr(0, 0, self.curString)
         for (index,line,) in enumerate(self.outputLines[top:bottom]):
             linenum = self.topLineNum + index
@@ -36,7 +36,7 @@ class Chat:
 
     def getCh(self):
         c = self.screen.getch()
-        valid_chars = re.compile('[\w\s!\?\.\':;]')
+        valid_chars = re.compile('[\w\s!\?\.\':;\[\]]')
         print('read:',c)
         if c==ord('\n'):
             t = self.curString

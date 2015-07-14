@@ -11,6 +11,9 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_address = ('', int(input("Port:")))
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
+nms = open('made_up.txt').readlines()
+nms_index = 0
+usr_nms = {}
 
 queue = []
 usrs = {}
@@ -26,8 +29,11 @@ def rec():
 				return
 			continue
 		usrs[address]=time.time()
+		if (address not in usr_nms):
+			usr_nms[address]=nms[nms_index]
+			nms_index+=1
 		print(data)
-		queue.append(data)
+		queue.append(usr_nms[address]+':'+data)
 
 def snd():
 	global queue
@@ -45,6 +51,7 @@ def snd():
 						sent = sock.sendto(d, u)
 		for u in toPop:
 			usrs.pop(u,None)
+			usr_nms.pop(u,None)
 
 def signal_handler(signal, frame):
 	global kill
