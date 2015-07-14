@@ -48,3 +48,5 @@ def main():
 	t = threading.Thread(worker=rec)
 	t.start()
 	snd()
+
+main()
