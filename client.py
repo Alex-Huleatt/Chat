@@ -43,14 +43,17 @@ class Chat:
         c = self.screen.getch()
         print('read:',c)
         if c==ord('\n'):
+            t = self.curString
             self.curString=''
+            return (1,t)
+
         elif c==ord('~'):
-            return -1
+            return (-1,'')
         else:
             self.curString+=chr(c)
 
         self.displayScreen()
-        return c
+        return (0,'')
     
     # catch any weird termination situations
     def __del__(self):
@@ -72,16 +75,15 @@ def rec(cht,sock):
 def send(cht,sock):
     global kill
     while 1:
-        while 1:
-            ipt = cht.getCh()
-            if ipt==-1:
-                sock.close()
-                kill = True
-                return
+        ipt = cht.getCh()
+        if ipt[0]==-1:
+            sock.close()
+            kill = True
+            return
+        elif ipt[0]==1:
+            sent = sock.sendto(ipt[1], server_address)
 
-        # Send data
-        print('sending "%s"' % read)
-        sent = sock.sendto(read, server_address)
+        
 
 
 

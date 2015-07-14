@@ -17,8 +17,11 @@ usrs = {}
 def rec():
 	global queue
 	global usrs
-	while 1:
-		data, address = sock.recvfrom(4096)
+	while not kill:
+		try:
+        	data, address = sock.recvfrom(4096)
+        except:
+        	continue
 		usrs[address]=time.time()
 		print(data)
 		queue.append(data)
@@ -26,7 +29,7 @@ def rec():
 def snd():
 	global queue
 	global usrs
-	while 1:
+	while not kill:
 		toPop=[]
 		if(len(queue)>0):
 			d = queue.pop()
@@ -41,9 +44,13 @@ def snd():
 			usrs.pop(u,None)
 
 def signal_handler(signal, frame):
+	global kill
 	sock.close()
+	kill = True
 	sys.exit(0)
 
+
+kill = False
 def main():
 	signal.signal(signal.SIGINT, signal_handler)
 	t = threading.Thread(target=rec)
