@@ -15,9 +15,6 @@ class Chat:
         self.topLineNum = 0
         self.nOutputLines=0
         self.displayScreen()
-
-    def getIpt(self):
-        return self.screen.getstr(0,0,curses.COLS)
         
     def run(self):
         global kill
@@ -50,6 +47,13 @@ class Chat:
         curses.nocbreak()
         curses.echo()
         curses.endwin()
+
+    def getCh(self,already):
+        self.screen.move(0,len(already))
+        c = self.screen.getCh()
+        self.screen.addstr(0, 0, already+c
+        self.displayScreen()
+        return c
     
     # catch any weird termination situations
     def __del__(self):
@@ -71,16 +75,16 @@ def rec(cht,sock):
 
 def send(cht,sock):
     global kill
-    
     while 1:
-        ipt = cht.getIpt()
-        if (ipt == ':q'):
-            kill=True
-            break
+        read = ''
+        while 1:
+            ipt = cht.getCh()
+            if ipt=='\n' or len(read) > 30:
+                break
+            read += ipt
         # Send data
-        print('sending "%s"' % ipt)
-        sent = sock.sendto(ipt, server_address)
-        cht.displayScreen()
+        print('sending "%s"' % read)
+        sent = sock.sendto(read, server_address)
     print(sys.stderr, 'closing socket')
     sock.close()
 
