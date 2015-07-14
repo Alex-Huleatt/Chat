@@ -51,7 +51,7 @@ class Chat:
     def getCh(self,already):
         self.screen.move(0,len(already))
         c = self.screen.getCh()
-        self.screen.addstr(0, 0, already+c
+        self.screen.addstr(0, 0, already+c)
         self.displayScreen()
         return c
     
