@@ -50,9 +50,9 @@ class Chat:
 
     def getCh(self,already):
         self.screen.move(0,len(already))
-        c = self.screen.getCh()
+        c = chr(self.screen.getch())
         self.screen.addstr(0, 0, already+c)
-        self.displayScreen()
+        #self.displayScreen()
         return c
     
     # catch any weird termination situations
@@ -63,7 +63,6 @@ def rec(cht,sock):
     global kill
     while not kill:
         # Receive response
-        print('waiting to receive')
         try:
         	data, server = sock.recvfrom(4096)
         except:
@@ -78,7 +77,8 @@ def send(cht,sock):
     while 1:
         read = ''
         while 1:
-            ipt = cht.getCh()
+            ipt = cht.getCh(read)
+            print("curStr:",read)
             if ipt=='\n' or len(read) > 30:
                 break
             read += ipt
