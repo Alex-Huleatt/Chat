@@ -1,4 +1,4 @@
-import socket,sys,time,threading,signal,re
+import socket,sys,time,threading,signal,re,random
 
 
 
@@ -12,6 +12,7 @@ server_address = ('', int(input("Port:")))
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 nms = open('made_up.txt').readlines()
+nms = random.shuffle(nms)
 nms_index = 0
 usr_nms = {}
 
