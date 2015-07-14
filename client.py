@@ -39,17 +39,18 @@ class Chat:
         valid_chars = re.compile('[\w\s!\?\.\':;\[\]]')
         print('read:',c)
         if c==ord('\n'):
-            t = self.curString
-            self.curString=''
-            self.displayScreen()
-            return (1,t)
+            if len(self.curString)>0:
+                t = self.curString
+                self.curString=''
+                self.displayScreen()
+                return (1,t)
         elif c==ord('~'):
             return (-1,'')
         elif c in range(256) and not valid_chars.match(chr(c)):
             self.curString=self.curString[:-1]
         else:
-            self.curString+=chr(c)
-
+            if (len(self.curString) < curses.COLS):
+                self.curString+=chr(c)
         self.displayScreen()
         return (0,'')
 
