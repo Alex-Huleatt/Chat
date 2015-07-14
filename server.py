@@ -5,6 +5,7 @@ import socket,sys,time,threading,signal
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.setblocking(0)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 # Bind the socket to the port
 server_address = ('', int(input("Port:")))
