@@ -19,9 +19,9 @@ def rec():
 	global usrs
 	while not kill:
 		try:
-        	data, address = sock.recvfrom(4096)
-        except:
-        	continue
+			data, address = sock.recvfrom(4096)
+		except:
+			continue
 		usrs[address]=time.time()
 		print(data)
 		queue.append(data)

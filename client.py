@@ -1,4 +1,4 @@
-import socket,sys,curses,random,time,threading,select
+import socket,sys,curses,random,time,threading,select,re
 
 kill = False
 
@@ -10,6 +10,7 @@ class Chat:
     def __init__(self):
         self.screen = curses.initscr()
         curses.cbreak()
+        curses.noecho()
         self.screen.keypad(1) 
         self.screen.border(0)
         self.topLineNum = 0
@@ -32,32 +33,25 @@ class Chat:
             self.screen.addstr(index+1, 0, line)
         self.screen.move(0,len(self.curString))
         self.screen.refresh()
- 
-    def restoreScreen(self):
-        curses.initscr()
-        curses.nocbreak()
-        curses.echo()
-        curses.endwin()
 
     def getCh(self):
         c = self.screen.getch()
+        valid_chars = re.compile('\w')
         print('read:',c)
         if c==ord('\n'):
             t = self.curString
             self.curString=''
+            self.displayScreen()
             return (1,t)
-
         elif c==ord('~'):
             return (-1,'')
+        elif c in range(256) and not valid_chars.match(chr(c)):
+            self.curString=self.curString[:-1]
         else:
             self.curString+=chr(c)
 
         self.displayScreen()
         return (0,'')
-    
-    # catch any weird termination situations
-    def __del__(self):
-        self.restoreScreen()
 
 def rec(cht,sock):
     global kill
@@ -78,13 +72,12 @@ def send(cht,sock):
         ipt = cht.getCh()
         if ipt[0]==-1:
             sock.close()
+            sys.stdout.close()
+            curses.endwin()
             kill = True
             return
         elif ipt[0]==1:
             sent = sock.sendto(ipt[1], server_address)
-
-        
-
 
 
 if __name__ == '__main__':
@@ -98,7 +91,6 @@ if __name__ == '__main__':
     rec_th = threading.Thread(target=rec,args=(ih,sock) )
     rec_th.start()
     send(ih,sock)
-    sys.exit()
 
 
 
