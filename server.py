@@ -42,7 +42,7 @@ def snd():
 					if (t - usrs[u] > 1000):
 						usrs.pop(u,None)
 					else:
-						sent = sock.sendto(data, address)
+						sent = sock.sendto(d, u)
 
 def main():
 	t = threading.Thread(target=rec)
