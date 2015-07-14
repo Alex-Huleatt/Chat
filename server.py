@@ -20,6 +20,7 @@ def rec():
 	while 1:
 		data, address = sock.recvfrom(4096)
 		usrs[address]=time.time()
+		print(data)
 		queue.append(data)
 
 def snd():
