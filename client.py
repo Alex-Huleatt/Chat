@@ -44,7 +44,7 @@ class Chat:
                 self.curString=''
                 self.displayScreen()
                 return (1,t)
-        elif c==ord('~'):
+        elif c==ord('~'): #atilida kills the client
             return (-1,'')
         elif c in range(256) and not valid_chars.match(chr(c)):
             self.curString=self.curString[:-1]
