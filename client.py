@@ -4,25 +4,17 @@ kill = False
 
 class Chat:
     outputLines = []
-    screen = None 
+    screen = None
+    curString = ''
        
     def __init__(self):
         self.screen = curses.initscr()
-        curses.echo()
         curses.cbreak()
         self.screen.keypad(1) 
         self.screen.border(0)
         self.topLineNum = 0
         self.nOutputLines=0
         self.displayScreen()
-        
-    def run(self):
-        global kill
-        while not kill:
-            try:
-                self.displayScreen()
-            except: # catch *all* exceptions
-                print(sys.exc_info())
 
     def addLine(self, line):
         self.outputLines.append(line)
@@ -34,12 +26,11 @@ class Chat:
         self.screen.erase()
         top = self.topLineNum
         bottom = self.topLineNum+curses.LINES
+        self.screen.addstr(0, 0, self.curString)
         for (index,line,) in enumerate(self.outputLines[top:bottom]):
             linenum = self.topLineNum + index
-            prefix = '___'
-            line = '%s %s' % (prefix, line,)
             self.screen.addstr(index+1, 0, line)
-        self.screen.move(0,0)
+        self.screen.move(0,len(self.curString))
         self.screen.refresh()
  
     def restoreScreen(self):
@@ -48,11 +39,17 @@ class Chat:
         curses.echo()
         curses.endwin()
 
-    def getCh(self,already):
-        self.screen.move(0,len(already))
-        c = chr(self.screen.getch())
-        self.screen.addstr(0, 0, already+c)
-        #self.displayScreen()
+    def getCh(self):
+        c = self.screen.getch()
+        print('read:',c)
+        if c==ord('\n'):
+            self.curString=''
+        elif c==ord('~'):
+            return -1
+        else:
+            self.curString+=chr(c)
+
+        self.displayScreen()
         return c
     
     # catch any weird termination situations
@@ -75,18 +72,16 @@ def rec(cht,sock):
 def send(cht,sock):
     global kill
     while 1:
-        read = ''
         while 1:
-            ipt = cht.getCh(read)
-            print("curStr:",read)
-            if ipt=='\n' or len(read) > 30:
-                break
-            read += ipt
+            ipt = cht.getCh()
+            if ipt==-1:
+                sock.close()
+                kill = True
+                return
+
         # Send data
         print('sending "%s"' % read)
         sent = sock.sendto(read, server_address)
-    print(sys.stderr, 'closing socket')
-    sock.close()
 
 
 
@@ -101,6 +96,7 @@ if __name__ == '__main__':
     rec_th = threading.Thread(target=rec,args=(ih,sock) )
     rec_th.start()
     send(ih,sock)
+    sys.exit()
 
 
 
