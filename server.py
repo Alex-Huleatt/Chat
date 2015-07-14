@@ -45,7 +45,7 @@ def snd():
 						sent = sock.sendto(data, address)
 
 def main():
-	t = threading.Thread(worker=rec)
+	t = threading.Thread(target=rec)
 	t.start()
 	snd()
 
