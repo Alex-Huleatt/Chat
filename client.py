@@ -1,12 +1,12 @@
 import socket,sys,curses,random,time,threading,select,re
 
-kill = False
+kill = False #global variable to alert for cleanup
 
 class Chat:
     outputLines = []
     screen = None
     curString = ''
-       
+    
     def __init__(self):
         self.screen = curses.initscr()
         curses.cbreak()
@@ -36,7 +36,7 @@ class Chat:
 
     def getCh(self):
         c = self.screen.getch()
-        valid_chars = re.compile('[\w\s!\?\.\':;\[\]]')
+        valid_chars = re.compile('[\w\s!\?\.\':;\[\],]')
         print('read:',c)
         if c==ord('\n'):
             if len(self.curString)>0:
@@ -70,16 +70,20 @@ def rec(cht,sock):
 def send(cht,sock):
     global kill
     while 1:
-        ipt = cht.getCh()
-        if ipt[0]==-1:
-            sock.close()
-            sys.stdout.close()
-            curses.endwin()
-            kill = True
-            return
-        elif ipt[0]==1:
-            sent = sock.sendto(ipt[1], server_address)
+        try: 
+            ipt = cht.getCh()
+            if ipt[0]==-1:
+                sock.close()
+                sys.stdout.close()
+                curses.endwin()
+                kill = True
+                return
+            elif ipt[0]==1:
+                sent = sock.sendto(ipt[1], server_address)
+        except:
+            continue #sorrynotsorry
 
+    
 
 if __name__ == '__main__':
     port=int(input("Port:"))
