@@ -27,16 +27,19 @@ class Chat:
         self.screen.erase()
         top = self.topLineNum
         bottom = self.topLineNum+(curses.LINES-1)
+        self.screen.hline(0,0,'_',curses.COLS)
         self.screen.addstr(0, 0, self.curString)
+
         for (index,line,) in enumerate(self.outputLines[top:bottom]):
             linenum = self.topLineNum + index
             self.screen.addstr(index+1, 0, line)
+
         self.screen.move(0,len(self.curString))
         self.screen.refresh()
 
     def getCh(self):
         c = self.screen.getch()
-        valid_chars = re.compile('[\w\s!\?\.\':;\[\],]')
+        valid_chars = re.compile('[\w\s!\?\.\':;\[\],<>/"\+=\-_]') #valid character regex
         print('read:',c)
         if c==ord('\n'):
             if len(self.curString)>0:
@@ -46,7 +49,7 @@ class Chat:
                 return (1,t)
         elif c==ord('~'): #atilida kills the client
             return (-1,'')
-        elif c in range(256) and not valid_chars.match(chr(c)):
+        elif c in range(256) and not valid_chars.match(chr(c)): 
             self.curString=self.curString[:-1]
         else:
             if (len(self.curString) < curses.COLS):
@@ -57,12 +60,10 @@ class Chat:
 def rec(cht,sock):
     global kill
     while not kill:
-        # Receive response
         try:
         	data, server = sock.recvfrom(4096)
         except:
         	continue
-        print('received "%s"' % data)
         cht.addLine(str(data))
         cht.displayScreen()
         
@@ -72,7 +73,7 @@ def send(cht,sock):
     while 1:
         try: 
             ipt = cht.getCh()
-            if ipt[0]==-1:
+            if ipt[0]==-1: #received ~, kill client
                 sock.close()
                 sys.stdout.close()
                 curses.endwin()
@@ -93,9 +94,10 @@ if __name__ == '__main__':
     sys.stdout = open('err.txt', "w")
     sys.stderr = sys.stdout
     ih = Chat()
-    rec_th = threading.Thread(target=rec,args=(ih,sock) )
+    rec_th = threading.Thread(target=rec,args=(ih,sock))
     rec_th.start()
     send(ih,sock)
+    rec_th.join()
 
 
 

@@ -1,8 +1,5 @@
 import socket,sys,time,threading,signal,re,random
 
-
-
-
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.setblocking(0)
@@ -11,7 +8,8 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_address = ('', int(input("Port:")))
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
-nms = open('made_up.txt').readlines()
+
+nms = open('made_up.txt').read.split('\n')
 random.shuffle(nms)
 nms_index = 0
 usr_nms = {}
