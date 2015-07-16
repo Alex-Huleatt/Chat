@@ -1,6 +1,6 @@
 import socket,sys,curses,random,time,threading,select,re
 
-kill = False #global variable to alert for cleanup
+
 
 class Chat:
     outputLines = []
@@ -40,7 +40,6 @@ class Chat:
     def getCh(self):
         c = self.screen.getch()
         valid_chars = re.compile('[\w\s!\?\.\':;\[\],<>/"\+=\-_]') #valid character regex
-        print('read:',c)
         if c==ord('\n'):
             if len(self.curString)>0:
                 t = self.curString
@@ -49,11 +48,11 @@ class Chat:
                 return (1,t)
         elif c==ord('~'): #atilida kills the client
             return (-1,'')
-        elif c in range(256) and not valid_chars.match(chr(c)): 
+        elif c in range(256) and not valid_chars.match(chr(c)): #if it isn't valid, it's a backspace
             self.curString=self.curString[:-1]
-        else:
-            if (len(self.curString) < curses.COLS):
+        elif (len(self.curString) < curses.COLS):
                 self.curString+=chr(c)
+
         self.displayScreen()
         return (0,'')
 
@@ -84,7 +83,7 @@ def send(cht,sock):
         except:
             continue #sorrynotsorry
 
-    
+kill = False #global variable to alert for cleanup  
 
 if __name__ == '__main__':
     port=int(input("Port:"))
