@@ -9,7 +9,7 @@ server_address = ('', int(input("Port:")))
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 
-nms = open('made_up.txt').read.split('\n')
+nms = open('made_up.txt').read().split('\n')
 random.shuffle(nms)
 nms_index = 0
 usr_nms = {}
